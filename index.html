@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>RevelApp 管理画面</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: "Inter", "Noto Sans JP", system-ui, sans-serif;
+    }
+    iframe {
+      border: 0;
+    }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-900">
+  <div class="flex min-h-screen">
+    <!-- サイドバー -->
+    <aside class="w-72 bg-slate-900 text-slate-100 flex flex-col py-8 px-6">
+      <div class="flex items-center gap-2 mb-10">
+        <div class="h-10 w-10 rounded-2xl bg-emerald-400/20 flex items-center justify-center text-emerald-300 font-semibold">R</div>
+        <div>
+          <p class="text-sm uppercase tracking-widest text-slate-400">RevelApp</p>
+          <p class="text-lg font-semibold">管理コンソール</p>
+        </div>
+      </div>
+      <p class="text-xs text-slate-400 mb-2 uppercase tracking-wider">メニュー</p>
+      <nav class="flex flex-col gap-1 text-sm" aria-label="主要メニュー">
+        <button type="button" data-page-target="home" class="nav-button px-4 py-2 rounded-xl text-left transition text-white bg-white/10 font-semibold">ホーム</button>
+        <button type="button" data-page-target="members" class="nav-button px-4 py-2 rounded-xl text-left transition text-slate-100/80 hover:bg-white/5">利用者一覧</button>
+        <button type="button" data-page-target="health-graph" class="nav-button px-4 py-2 rounded-xl text-left transition text-slate-100/80 hover:bg-white/5">体調の見える化</button>
+        <button type="button" data-page-target="rewards" class="nav-button px-4 py-2 rounded-xl text-left transition text-slate-100/80 hover:bg-white/5">工賃</button>
+        <button type="button" data-page-target="contract" class="nav-button px-4 py-2 rounded-xl text-left transition text-slate-100/80 hover:bg-white/5">ご契約情報</button>
+        <button type="button" data-page-target="support" class="nav-button px-4 py-2 rounded-xl text-left transition text-slate-100/80 hover:bg-white/5">サポート</button>
+      </nav>
+      <div class="mt-auto pt-10 border-t border-white/10 space-y-1 text-sm">
+        <p class="text-xs text-slate-400">現在のプラン</p>
+        <p class="font-semibold">フォーカスプラン</p>
+        <p class="text-xs text-slate-500">利用者 18 / 25 人</p>
+      </div>
+    </aside>
+
+    <!-- メインコンテンツ -->
+    <main class="flex-1 p-8 space-y-16 overflow-y-auto">
+      <noscript>
+        <div class="rounded-2xl bg-amber-100 text-amber-800 p-4 text-sm">
+          JavaScriptを有効にすると各ページを切り替えて閲覧できます。現在はすべてのページが順番に表示されます。
+        </div>
+      </noscript>
+
+      <!-- 1. ホーム -->
+      <section id="home" data-page="home" class="space-y-8">
+        <div class="flex flex-wrap items-end gap-4 justify-between">
+          <div>
+            <p class="text-xs uppercase tracking-wider text-slate-500">ホーム</p>
+            <h1 class="text-3xl font-bold mt-1">RevelApp 利用状況サマリー</h1>
+            <p class="text-slate-500 mt-2">契約状況と利用状況をひと目で確認できます。</p>
+          </div>
+          <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-50 text-emerald-600 text-sm font-semibold">
+            自動更新（次回 2024/12/01）
+          </span>
+        </div>
+
+        <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          <article class="bg-white rounded-2xl p-5 shadow-sm">
+            <p class="text-xs text-slate-400 uppercase tracking-wider">ご契約期間</p>
+            <p class="text-xl font-semibold mt-2">2024/04/01〜2025/03/31</p>
+            <p class="text-xs text-slate-500 mt-1">更新タイミング：毎年4月（自動更新）</p>
+          </article>
+          <article class="bg-white rounded-2xl p-5 shadow-sm">
+            <p class="text-xs text-slate-400 uppercase tracking-wider">ご登録人数</p>
+            <p class="text-3xl font-bold mt-2">24<span class="text-base font-normal text-slate-500"> / 30人</span></p>
+            <p class="text-xs text-emerald-600 mt-1">先月比 +2 人</p>
+          </article>
+          <article class="bg-white rounded-2xl p-5 shadow-sm">
+            <p class="text-xs text-slate-400 uppercase tracking-wider">ご契約プラン</p>
+            <p class="text-xl font-semibold mt-2">フォーカス</p>
+            <ul class="text-sm text-slate-500 mt-2 list-disc list-inside">
+              <li>利用者一覧＋選択ゲーム</li>
+              <li>体調グラフ閲覧</li>
+            </ul>
+          </article>
+          <article class="bg-white rounded-2xl p-5 shadow-sm">
+            <p class="text-xs text-slate-400 uppercase tracking-wider">今月の主な予定</p>
+            <ul class="mt-3 space-y-2 text-sm text-slate-600">
+              <li><span class="font-semibold text-slate-900">11/12</span> AMA #16</li>
+              <li><span class="font-semibold text-slate-900">11/18</span> 支払日</li>
+              <li><span class="font-semibold text-slate-900">11/28</span> アップデート説明会</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="grid gap-6 xl:grid-cols-3">
+          <article class="bg-white rounded-3xl p-6 shadow-sm xl:col-span-2">
+            <header class="flex items-center justify-between mb-4">
+              <div>
+                <h2 class="text-xl font-semibold">RevelApp カレンダー</h2>
+                <p class="text-sm text-slate-500">イベント / お知らせ / 支払日などを表示</p>
+              </div>
+              <div class="flex gap-2 text-xs text-slate-500">
+                <button class="px-3 py-1 rounded-full border border-slate-200">前月</button>
+                <button class="px-3 py-1 rounded-full border border-slate-200">翌月</button>
+              </div>
+            </header>
+            <div class="grid grid-cols-7 text-center text-xs font-semibold text-slate-400 pb-2 border-b border-slate-100">
+              <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+            </div>
+            <div class="grid grid-cols-7 gap-2 mt-4 text-sm">
+              <div class="h-20 border border-slate-100 rounded-xl flex flex-col p-2">
+                <span class="text-xs text-slate-400">6</span>
+              </div>
+              <div class="h-20 border border-slate-100 rounded-xl flex flex-col p-2">
+                <span class="text-xs text-slate-400">7</span>
+                <span class="mt-auto text-[11px] px-2 py-1 rounded-lg bg-emerald-50 text-emerald-600">支払日</span>
+              </div>
+              <div class="h-20 border border-slate-100 rounded-xl flex flex-col p-2">
+                <span class="text-xs text-slate-400">8</span>
+              </div>
+              <div class="h-20 border border-slate-100 rounded-xl flex flex-col p-2">
+                <span class="text-xs text-slate-400">9</span>
+                <span class="mt-auto text-[11px] px-2 py-1 rounded-lg bg-blue-50 text-blue-600">AMA</span>
+              </div>
+              <div class="h-20 border border-slate-100 rounded-xl flex flex-col p-2">
+                <span class="text-xs text-slate-400">10</span>
+              </div>
+              <div class="h-20 border border-slate-100 rounded-xl flex flex-col p-2">
+                <span class="text-xs text-slate-400">11</span>
+              </div>
+              <div class="h-20 border border-slate-100 rounded-xl flex flex-col p-2">
+                <span class="text-xs text-slate-400">12</span>
+                <span class="mt-auto text-[11px] px-2 py-1 rounded-lg bg-orange-50 text-orange-600">アプデ</span>
+              </div>
+            </div>
+            <ul class="mt-6 space-y-3 text-sm">
+              <li class="flex items-start gap-3">
+                <span class="w-20 text-xs text-slate-400">11/09</span>
+                <div>
+                  <p class="font-semibold text-slate-800">AMA #16</p>
+                  <p class="text-slate-500">アプリ活用ノウハウを共有します</p>
+                </div>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="w-20 text-xs text-slate-400">11/18</span>
+                <div>
+                  <p class="font-semibold text-slate-800">支払日</p>
+                  <p class="text-slate-500">当月の工賃振込予定</p>
+                </div>
+              </li>
+            </ul>
+          </article>
+
+          <article class="bg-white rounded-3xl p-6 shadow-sm space-y-4">
+            <header class="flex items-center justify-between">
+              <div>
+                <h2 class="text-xl font-semibold">マニュアル動画</h2>
+                <p class="text-sm text-slate-500">初期設定やセルフモニタリングの手順を動画で確認</p>
+              </div>
+              <button class="text-xs text-blue-600 font-semibold">一覧を開く</button>
+            </header>
+            <div class="aspect-video rounded-2xl overflow-hidden bg-slate-100">
+              <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen title="RevelApp Manual"></iframe>
+            </div>
+            <div class="space-y-2">
+              <button class="w-full flex items-center justify-between px-4 py-2 rounded-xl border border-slate-200 text-sm hover:bg-slate-50">
+                <span>初期設定ガイド</span>
+                <span class="text-xs text-slate-400">8:32</span>
+              </button>
+              <button class="w-full flex items-center justify-between px-4 py-2 rounded-xl border border-slate-200 text-sm hover:bg-slate-50">
+                <span>利用者登録手順</span>
+                <span class="text-xs text-slate-400">6:15</span>
+              </button>
+              <button class="w-full flex items-center justify-between px-4 py-2 rounded-xl border border-slate-200 text-sm hover:bg-slate-50">
+                <span>セルフモニタリング活用</span>
+                <span class="text-xs text-slate-400">9:40</span>
+              </button>
+            </div>
+          </article>
+        </div>
+
+        <article class="bg-white rounded-3xl p-6 shadow-sm space-y-4">
+          <header>
+            <h2 class="text-xl font-semibold">WordPress + Next.js ハイブリッド構成</h2>
+            <p class="text-sm text-slate-500">要件定義v1に基づき、WPの認証・設定管理とWebアプリの業務UIを連携します。</p>
+          </header>
+          <div class="grid gap-4 md:grid-cols-2 text-sm text-slate-600">
+            <div class="rounded-2xl border border-slate-100 p-4">
+              <p class="text-xs uppercase tracking-widest text-slate-400">WordPress側</p>
+              <ul class="list-disc list-inside space-y-1 mt-2">
+                <li>認証（施設アカウント1ID）</li>
+                <li>契約情報・サポート記事をCPT/ACFで管理</li>
+                <li>WP REST API + カスタムエンドポイント</li>
+              </ul>
+            </div>
+            <div class="rounded-2xl border border-slate-100 p-4">
+              <p class="text-xs uppercase tracking-widest text-slate-400">Webアプリ側</p>
+              <ul class="list-disc list-inside space-y-1 mt-2">
+                <li>Next.js + Tailwindでダッシュボードを構築</li>
+                <li>facility_idでデータを絞り込み表示</li>
+                <li>セルフモニタリング/工賃データの可視化</li>
+              </ul>
+            </div>
+          </div>
+          <p class="text-xs text-slate-500">将来はGASやRevelApp本体DBとの直接連携、API仕様書の整備を予定しています。</p>
+        </article>
+      </section>
+
+      <!-- 2. 利用者一覧 -->
+      <section id="members" data-page="members" class="space-y-6 hidden">
+        <div class="flex items-center justify-between flex-wrap gap-4">
+          <div>
+            <h2 class="text-2xl font-bold">利用者一覧</h2>
+            <p class="text-sm text-slate-500">プランに応じて表示内容と操作が変わります。</p>
+          </div>
+          <div class="flex items-center gap-2 text-xs">
+            <span class="px-3 py-1 rounded-full bg-slate-200 text-slate-500">エントリー：非表示</span>
+            <span class="px-3 py-1 rounded-full bg-blue-100 text-blue-600">フレキシブル：一覧のみ</span>
+            <span class="px-3 py-1 rounded-full bg-emerald-100 text-emerald-700">フォーカス：ゲーム情報付き</span>
+          </div>
+        </div>
+
+        <article class="bg-white rounded-3xl p-6 shadow-sm space-y-4">
+          <div class="flex flex-wrap gap-3 items-center justify-between">
+            <div class="flex items-center gap-3">
+              <span class="text-xs font-semibold tracking-widest text-slate-400">表示プラン</span>
+              <div class="flex gap-2">
+                <button class="px-3 py-1 rounded-full border border-slate-200 text-xs text-slate-400 cursor-default" disabled>エントリー</button>
+                <button class="px-3 py-1 rounded-full border border-slate-200 text-xs text-slate-600 bg-slate-50">フレキシブル</button>
+                <button class="px-3 py-1 rounded-full border border-emerald-200 text-xs text-emerald-700 bg-emerald-50">フォーカス</button>
+              </div>
+            </div>
+            <button class="px-4 py-2 rounded-full bg-slate-900 text-white text-sm">CSVをエクスポート</button>
+          </div>
+
+          <div class="overflow-auto">
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="text-left text-slate-500 border-b border-slate-100">
+                  <th class="py-3 pr-4 font-semibold">利用者名 / ニックネーム</th>
+                  <th class="py-3 pr-4 font-semibold">モニタリングシート</th>
+                  <th class="py-3 pr-4 font-semibold">形式</th>
+                  <th class="py-3 pr-4 font-semibold">継続期間</th>
+                  <th class="py-3 pr-4 font-semibold">ステータス</th>
+                  <th class="py-3 font-semibold">選択ゲーム（フォーカス）</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100">
+                <tr>
+                  <td class="py-4 pr-4">
+                    <p class="font-semibold text-slate-900">佐藤 光（みっちー）</p>
+                    <a href="#" class="text-xs text-blue-600">モニタリングシートを開く</a>
+                  </td>
+                  <td class="py-4 pr-4">セルフモニタリング #23</td>
+                  <td class="py-4 pr-4">スマホ入力</td>
+                  <td class="py-4 pr-4">2022/08〜（24ヶ月）</td>
+                  <td class="py-4 pr-4">
+                    <span class="px-2 py-1 text-xs rounded-full bg-emerald-50 text-emerald-600">利用中</span>
+                  </td>
+                  <td class="py-4">
+                    <div class="flex flex-wrap gap-2">
+                      <span class="px-2 py-1 text-xs rounded-lg bg-indigo-50 text-indigo-600">Axie</span>
+                      <span class="px-2 py-1 text-xs rounded-lg bg-pink-50 text-pink-600">ElfForest</span>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="py-4 pr-4">
+                    <p class="font-semibold text-slate-900">村上 花（ハナ）</p>
+                    <a href="#" class="text-xs text-blue-600">モニタリングシートを開く</a>
+                  </td>
+                  <td class="py-4 pr-4">セルフモニタリング #31</td>
+                  <td class="py-4 pr-4">代理入力（スタッフ）</td>
+                  <td class="py-4 pr-4">2024/04〜（6ヶ月）</td>
+                  <td class="py-4 pr-4">
+                    <span class="px-2 py-1 text-xs rounded-full bg-yellow-50 text-yellow-600">12月で登録解除</span>
+                  </td>
+                  <td class="py-4">
+                    <div class="flex flex-wrap gap-2">
+                      <span class="px-2 py-1 text-xs rounded-lg bg-purple-50 text-purple-600">Puzzle Quest</span>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="py-4 pr-4">
+                    <p class="font-semibold text-slate-900">木村 大（だいちゃん）</p>
+                    <a href="#" class="text-xs text-blue-600">モニタリングシートを開く</a>
+                  </td>
+                  <td class="py-4 pr-4">セルフモニタリング #12</td>
+                  <td class="py-4 pr-4">紙入力</td>
+                  <td class="py-4 pr-4">2024/12開始予定</td>
+                  <td class="py-4 pr-4">
+                    <span class="px-2 py-1 text-xs rounded-full bg-slate-100 text-slate-500">1月から開始</span>
+                  </td>
+                  <td class="py-4">
+                    <span class="px-2 py-1 text-xs rounded-lg bg-slate-100 text-slate-500">未設定</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="flex flex-wrap justify-between gap-4 items-center">
+            <p class="text-sm text-slate-500">
+              ※ 利用者の追加・解除は直接操作できません。申請フォームよりご連絡ください。
+            </p>
+            <button class="px-5 py-2 rounded-full bg-emerald-600 text-white text-sm font-semibold">利用者変更はこちら</button>
+          </div>
+        </article>
+      </section>
+
+      <!-- 3. 体調の見える化グラフ -->
+      <section id="health-graph" data-page="health-graph" class="space-y-6 hidden">
+        <div class="flex items-center justify-between flex-wrap gap-4">
+          <div>
+            <h2 class="text-2xl font-bold">体調の見える化グラフ</h2>
+            <p class="text-sm text-slate-500">年月と利用者を指定してモニタリング状況を確認します。</p>
+          </div>
+          <div class="flex flex-wrap gap-3">
+            <select class="px-4 py-2 rounded-xl border border-slate-200 text-sm bg-white">
+              <option>2024年</option>
+              <option>2023年</option>
+            </select>
+            <select class="px-4 py-2 rounded-xl border border-slate-200 text-sm bg-white">
+              <option>11月</option>
+              <option>10月</option>
+            </select>
+            <select class="px-4 py-2 rounded-xl border border-slate-200 text-sm bg-white">
+              <option>佐藤 光</option>
+              <option>村上 花</option>
+              <option>木村 大</option>
+            </select>
+            <button class="px-5 py-2 rounded-full bg-slate-900 text-white text-sm font-semibold">表示</button>
+          </div>
+        </div>
+
+        <div class="grid gap-6">
+          <div class="grid gap-6 md:grid-cols-3">
+            <article class="bg-white rounded-3xl p-6 shadow-sm space-y-3">
+              <p class="text-sm text-slate-500">累計プレイ / 入力回数</p>
+              <p class="text-4xl font-bold">128回</p>
+              <p class="text-xs text-emerald-600">前月比 +6%</p>
+            </article>
+            <article class="bg-white rounded-3xl p-6 shadow-sm space-y-3">
+              <p class="text-sm text-slate-500">平均睡眠時間</p>
+              <p class="text-4xl font-bold">6.8 h</p>
+              <p class="text-xs text-slate-500">前月比 +0.4h</p>
+            </article>
+            <article class="bg-white rounded-3xl p-6 shadow-sm space-y-3">
+              <p class="text-sm text-slate-500">前月比（気分スコア）</p>
+              <p class="text-4xl font-bold flex items-center gap-2">
+                72
+                <span class="text-sm text-emerald-600">+5</span>
+              </p>
+              <p class="text-xs text-slate-500">0〜100 指標</p>
+            </article>
+          </div>
+
+          <div class="grid gap-6 lg:grid-cols-3">
+            <article class="bg-white rounded-3xl p-6 shadow-sm space-y-4 lg:col-span-2">
+              <div class="flex items-center justify-between">
+                <div>
+                  <h3 class="text-lg font-semibold">プレイしたゲーム</h3>
+                  <p class="text-xs text-slate-500">直近1ヶ月でプレイしたゲームバッジ</p>
+                </div>
+                <button class="text-xs text-blue-600 font-semibold">履歴を表示</button>
+              </div>
+              <div class="flex flex-wrap gap-3">
+                <span class="px-4 py-2 rounded-full bg-indigo-50 text-indigo-600 text-sm font-semibold">Axie Infinity</span>
+                <span class="px-4 py-2 rounded-full bg-pink-50 text-pink-600 text-sm font-semibold">ElfForest</span>
+                <span class="px-4 py-2 rounded-full bg-amber-50 text-amber-600 text-sm font-semibold">Puzzle Quest</span>
+                <span class="px-4 py-2 rounded-full bg-slate-100 text-slate-600 text-sm font-semibold">新規ゲーム</span>
+              </div>
+            </article>
+            <article class="bg-white rounded-3xl p-6 shadow-sm space-y-3">
+              <div class="flex items-center justify-between">
+                <div>
+                  <h3 class="text-lg font-semibold">入力カレンダー</h3>
+                  <p class="text-xs text-slate-500">セルフモニタリング実施日</p>
+                </div>
+                <span class="text-xs text-slate-400">11月</span>
+              </div>
+              <div class="grid grid-cols-7 gap-1 text-center text-xs text-slate-500">
+                <span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span>
+              </div>
+              <div class="grid grid-cols-7 gap-1 text-[11px]">
+                <span class="h-8 flex items-center justify-center rounded bg-slate-50 text-slate-400">1</span>
+                <span class="h-8 flex items-center justify-center rounded bg-slate-100 text-slate-600">2</span>
+                <span class="h-8 flex items-center justify-center rounded bg-emerald-100 text-emerald-600">3</span>
+                <span class="h-8 flex items-center justify-center rounded bg-emerald-200 text-emerald-700">4</span>
+                <span class="h-8 flex items-center justify-center rounded bg-red-100 text-red-600">5</span>
+                <span class="h-8 flex items-center justify-center rounded bg-emerald-100 text-emerald-600">6</span>
+                <span class="h-8 flex items-center justify-center rounded bg-slate-50 text-slate-400">7</span>
+              </div>
+              <div class="flex flex-wrap gap-2 text-[11px] text-slate-500">
+                <span class="px-2 py-1 rounded bg-emerald-100 text-emerald-700">実施</span>
+                <span class="px-2 py-1 rounded bg-red-100 text-red-600">体調注意</span>
+                <span class="px-2 py-1 rounded bg-slate-100 text-slate-600">未入力</span>
+              </div>
+            </article>
+          </div>
+
+          <article class="bg-emerald-50 rounded-3xl p-6 shadow-sm flex items-start gap-4">
+            <span class="text-3xl">💬</span>
+            <div>
+              <p class="text-sm text-slate-600">セルフモニタリングAIコメント</p>
+              <p class="text-lg font-semibold">「先月に比べて疲労度が安定してきましたね。睡眠時間も改善傾向にあります。」</p>
+              <p class="text-xs text-slate-500 mt-1">※ 将来的に自動生成ロジックを実装予定</p>
+            </div>
+          </article>
+
+          <div class="grid gap-6 lg:grid-cols-2">
+            <article class="bg-white rounded-3xl p-6 shadow-sm">
+              <header class="flex items-center justify-between mb-4">
+                <div>
+                  <h3 class="text-lg font-semibold">体調スコア</h3>
+                  <p class="text-xs text-slate-500">折れ線グラフ＋天気アイコン（Chart.js想定）</p>
+                </div>
+                <span class="text-xs text-slate-400">表示例</span>
+              </header>
+              <div class="h-56 rounded-2xl border border-dashed border-slate-200 flex items-center justify-center text-slate-400 text-sm">
+                Chart.js line chart placeholder
+              </div>
+            </article>
+            <article class="bg-white rounded-3xl p-6 shadow-sm">
+              <header class="flex items-center justify-between mb-4">
+                <div>
+                  <h3 class="text-lg font-semibold">セルフモニタリング実施率</h3>
+                  <p class="text-xs text-slate-500">棒グラフ（実施日数 / プレイ日数）</p>
+                </div>
+                <span class="text-xs text-slate-400">表示例</span>
+              </header>
+              <div class="h-56 rounded-2xl border border-dashed border-slate-200 flex items-center justify-center text-slate-400 text-sm">
+                Chart.js bar chart placeholder
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. 工賃 -->
+      <section id="rewards" data-page="rewards" class="space-y-6 hidden">
+        <div class="flex items-center justify-between flex-wrap gap-4">
+          <div>
+            <h2 class="text-2xl font-bold">工賃</h2>
+            <p class="text-sm text-slate-500">ゲーム・作業の実績に応じた工賃と請求状況を確認できます。</p>
+          </div>
+          <div class="flex flex-wrap gap-3">
+            <select class="px-4 py-2 rounded-xl border border-slate-200 text-sm bg-white">
+              <option>2024年</option>
+              <option>2023年</option>
+            </select>
+            <select class="px-4 py-2 rounded-xl border border-slate-200 text-sm bg-white">
+              <option>第3四半期</option>
+              <option>第4四半期</option>
+            </select>
+            <select class="px-4 py-2 rounded-xl border border-slate-200 text-sm bg-white">
+              <option>総合</option>
+              <option>事業所別</option>
+            </select>
+            <button class="px-5 py-2 rounded-full bg-slate-900 text-white text-sm font-semibold">レポートを出力</button>
+          </div>
+        </div>
+
+        <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+          <section class="bg-white rounded-2xl p-5 shadow-sm">
+            <p class="text-xs text-slate-400 uppercase tracking-wider">アンケート回答率</p>
+            <p class="text-3xl font-bold mt-2">95%</p>
+            <p class="text-xs text-emerald-600 mt-1">+3% / 前四半期比</p>
+          </section>
+          <section class="bg-white rounded-2xl p-5 shadow-sm">
+            <p class="text-xs text-slate-400 uppercase tracking-wider">平均パフォーマンス</p>
+            <p class="text-3xl font-bold mt-2">4.3 / 5</p>
+            <p class="text-xs text-emerald-600 mt-1">+0.1 / 前四半期比</p>
+          </section>
+          <section class="bg-white rounded-2xl p-5 shadow-sm">
+            <p class="text-xs text-slate-400 uppercase tracking-wider">上位パフォーマー</p>
+            <p class="text-3xl font-bold mt-2">43 人</p>
+            <p class="text-xs text-slate-500 mt-1">全体の35%</p>
+          </section>
+          <section class="bg-white rounded-2xl p-5 shadow-sm">
+            <p class="text-xs text-slate-400 uppercase tracking-wider">改善率</p>
+            <p class="text-3xl font-bold mt-2">78%</p>
+            <p class="text-xs text-slate-500 mt-1">改善傾向の利用者</p>
+          </section>
+        </div>
+
+        <div class="grid gap-6 lg:grid-cols-3">
+          <article class="bg-white rounded-3xl p-6 shadow-sm lg:col-span-2">
+            <header class="flex items-center justify-between mb-4">
+              <div>
+                <h3 class="text-lg font-semibold">工賃推移グラフ</h3>
+                <p class="text-xs text-slate-500">施設全体の月次工賃合計（折れ線グラフ想定）</p>
+              </div>
+              <div class="text-xs text-slate-400">Chart.js</div>
+            </header>
+            <div class="h-64 rounded-2xl border border-dashed border-slate-200 flex items-center justify-center text-slate-400 text-sm">
+              Line chart placeholder
+            </div>
+          </article>
+          <article class="bg-white rounded-3xl p-6 shadow-sm space-y-4">
+            <h3 class="text-lg font-semibold">ゲーム単価のデザイン</h3>
+            <p class="text-sm text-slate-500">サービス継続期間に応じてポイント単価が変動します。</p>
+            <div class="space-y-3">
+              <div class="flex justify-between items-center px-4 py-3 rounded-2xl bg-slate-50">
+                <span class="text-sm font-semibold">0〜3ヶ月</span>
+                <span class="text-base font-bold text-slate-900">1 pt = 1円</span>
+              </div>
+              <div class="flex justify-between items-center px-4 py-3 rounded-2xl bg-blue-50">
+                <span class="text-sm font-semibold">4〜6ヶ月</span>
+                <span class="text-base font-bold text-blue-700">1 pt = 1.2円</span>
+              </div>
+              <div class="flex justify-between items-center px-4 py-3 rounded-2xl bg-emerald-50">
+                <span class="text-sm font-semibold">7ヶ月〜</span>
+                <span class="text-base font-bold text-emerald-700">1 pt = 1.5円</span>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <article class="bg-white rounded-3xl p-6 shadow-sm space-y-4">
+          <header class="flex flex-wrap gap-3 items-center justify-between">
+            <div>
+              <h3 class="text-lg font-semibold">利用者ごとの工賃金額</h3>
+              <p class="text-xs text-slate-500">年月：2024年11月</p>
+            </div>
+            <button class="text-sm text-blue-600 font-semibold">CSVダウンロード</button>
+          </header>
+          <div class="overflow-auto">
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="text-left text-slate-500 border-b border-slate-100">
+                  <th class="py-3 pr-4 font-semibold">利用者名</th>
+                  <th class="py-3 pr-4 font-semibold">ポイント合計</th>
+                  <th class="py-3 pr-4 font-semibold">単価</th>
+                  <th class="py-3 pr-4 font-semibold">工賃金額</th>
+                  <th class="py-3 pr-4 font-semibold">支払ステータス</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100">
+                <tr>
+                  <td class="py-4 pr-4">佐藤 光</td>
+                  <td class="py-4 pr-4">12,420 pt</td>
+                  <td class="py-4 pr-4">1.5 円</td>
+                  <td class="py-4 pr-4 font-semibold">18,630 円</td>
+                  <td class="py-4 pr-4">
+                    <span class="px-2 py-1 text-xs rounded-full bg-emerald-50 text-emerald-600">支払済</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="py-4 pr-4">村上 花</td>
+                  <td class="py-4 pr-4">8,200 pt</td>
+                  <td class="py-4 pr-4">1.2 円</td>
+                  <td class="py-4 pr-4 font-semibold">9,840 円</td>
+                  <td class="py-4 pr-4">
+                    <span class="px-2 py-1 text-xs rounded-full bg-yellow-50 text-yellow-600">確定</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="py-4 pr-4">木村 大</td>
+                  <td class="py-4 pr-4">3,000 pt</td>
+                  <td class="py-4 pr-4">1 円</td>
+                  <td class="py-4 pr-4 font-semibold">3,000 円</td>
+                  <td class="py-4 pr-4">
+                    <span class="px-2 py-1 text-xs rounded-full bg-slate-100 text-slate-600">仮</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+        <article class="bg-white rounded-3xl p-6 shadow-sm space-y-4">
+          <header class="flex flex-wrap gap-3 items-center justify-between">
+            <div>
+              <h3 class="text-lg font-semibold">工賃明細 &amp; RevelAppへの請求書</h3>
+              <p class="text-xs text-slate-500">PDFリンクと発行ステータスを月ごとに表示</p>
+            </div>
+          </header>
+          <div class="overflow-auto">
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="text-left text-slate-500 border-b border-slate-100">
+                  <th class="py-3 pr-4 font-semibold">年月</th>
+                  <th class="py-3 pr-4 font-semibold">工賃明細</th>
+                  <th class="py-3 pr-4 font-semibold">RevelApp請求書</th>
+                  <th class="py-3 font-semibold">ステータス</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100">
+                <tr>
+                  <td class="py-4 pr-4">2024年11月</td>
+                  <td class="py-4 pr-4"><a href="#" class="text-blue-600 underline text-sm">PDFをダウンロード</a></td>
+                  <td class="py-4 pr-4"><a href="#" class="text-blue-600 underline text-sm">PDFをダウンロード</a></td>
+                  <td class="py-4">
+                    <span class="px-2 py-1 text-xs rounded-full bg-emerald-50 text-emerald-600">発行済</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="py-4 pr-4">2024年10月</td>
+                  <td class="py-4 pr-4"><a href="#" class="text-blue-600 underline text-sm">PDFをダウンロード</a></td>
+                  <td class="py-4 pr-4"><a href="#" class="text-blue-600 underline text-sm">PDFをダウンロード</a></td>
+                  <td class="py-4">
+                    <span class="px-2 py-1 text-xs rounded-full bg-yellow-50 text-yellow-600">確定済</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="py-4 pr-4">2024年9月</td>
+                  <td class="py-4 pr-4"><a href="#" class="text-blue-600 underline text-sm">PDFをダウンロード</a></td>
+                  <td class="py-4 pr-4"><a href="#" class="text-blue-600 underline text-sm">PDFをダウンロード</a></td>
+                  <td class="py-4">
+                    <span class="px-2 py-1 text-xs rounded-full bg-slate-100 text-slate-600">発行待ち</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+
+      <!-- 5. ご契約情報 -->
+      <section id="contract" data-page="contract" class="space-y-6 hidden">
+        <div class="flex items-center justify-between flex-wrap gap-4">
+          <div>
+            <h2 class="text-2xl font-bold">ご契約情報</h2>
+            <p class="text-sm text-slate-500">いつでも参照できるよう契約内容を整理して表示します。</p>
+          </div>
+          <button class="px-5 py-2 rounded-full bg-slate-900 text-white text-sm font-semibold">編集申請</button>
+        </div>
+
+        <div class="grid gap-6 lg:grid-cols-3">
+          <article class="bg-white rounded-3xl p-6 shadow-sm space-y-4 lg:col-span-2">
+            <h3 class="text-lg font-semibold">基本情報</h3>
+            <dl class="grid gap-y-4 gap-x-8 sm:grid-cols-2 text-sm">
+              <div>
+                <dt class="text-slate-500">法人名</dt>
+                <dd class="font-semibold text-slate-900">WellsTech株式会社</dd>
+              </div>
+              <div>
+                <dt class="text-slate-500">ご契約事業所名</dt>
+                <dd class="font-semibold text-slate-900">GIF-TECH's 板橋</dd>
+              </div>
+              <div>
+                <dt class="text-slate-500">住所</dt>
+                <dd class="font-semibold text-slate-900">東京都板橋区 ○○○</dd>
+              </div>
+              <div>
+                <dt class="text-slate-500">施設種別</dt>
+                <dd class="font-semibold text-slate-900">就労継続支援B型</dd>
+              </div>
+              <div>
+                <dt class="text-slate-500">契約日</dt>
+                <dd class="font-semibold text-slate-900">2024/04/01</dd>
+              </div>
+              <div>
+                <dt class="text-slate-500">お支払い方法</dt>
+                <dd class="font-semibold text-slate-900">口座振替</dd>
+              </div>
+            </dl>
+          </article>
+
+          <article class="bg-white rounded-3xl p-6 shadow-sm space-y-4">
+            <h3 class="text-lg font-semibold">ご連絡先</h3>
+            <dl class="space-y-4 text-sm">
+              <div>
+                <dt class="text-slate-500">ご担当者様名</dt>
+                <dd class="font-semibold text-slate-900">近藤 貴司 様</dd>
+              </div>
+              <div>
+                <dt class="text-slate-500">ご担当者様のご連絡先</dt>
+                <dd class="font-semibold text-slate-900">sample@example.com / 03-XXXX-XXXX</dd>
+              </div>
+              <div>
+                <dt class="text-slate-500">事務等に関するご連絡先</dt>
+                <dd class="font-semibold text-slate-900">billing@example.com</dd>
+              </div>
+            </dl>
+          </article>
+        </div>
+
+        <article class="bg-white rounded-3xl p-6 shadow-sm space-y-4">
+          <h3 class="text-lg font-semibold">ご契約プラン</h3>
+          <dl class="grid gap-y-4 gap-x-8 sm:grid-cols-2 text-sm">
+            <div>
+              <dt class="text-slate-500">ご契約プラン</dt>
+              <dd class="font-semibold text-slate-900">フォーカスプラン</dd>
+            </div>
+            <div>
+              <dt class="text-slate-500">登録利用者数</dt>
+              <dd class="font-semibold text-slate-900">15 名</dd>
+            </div>
+            <div>
+              <dt class="text-slate-500">ご利用PC台数</dt>
+              <dd class="font-semibold text-slate-900">3 台</dd>
+            </div>
+            <div>
+              <dt class="text-slate-500">月額ご利用料金</dt>
+              <dd class="font-semibold text-slate-900">55,000 円（税込）</dd>
+            </div>
+          </dl>
+          <p class="text-xs text-slate-500">
+            情報を変更したい場合は「編集申請」から申請してください。RevelApp運営側で確認後に更新します。
+          </p>
+        </article>
+      </section>
+
+      <!-- 6. サポート -->
+      <section id="support" data-page="support" class="space-y-6 hidden">
+        <div class="flex items-center justify-between flex-wrap gap-4">
+          <div>
+            <h2 class="text-2xl font-bold">サポートページ</h2>
+            <p class="text-sm text-slate-500">既存のWordPressサポートサイトと連携します。</p>
+          </div>
+          <a href="#" class="px-5 py-2 rounded-full bg-blue-600 text-white text-sm font-semibold">WP サポートサイトへ</a>
+        </div>
+        <article class="bg-white rounded-3xl p-6 shadow-sm space-y-4">
+          <h3 class="text-lg font-semibold">サポートメニュー</h3>
+          <ul class="grid gap-4 md:grid-cols-2 text-sm">
+            <li class="p-4 rounded-2xl border border-slate-100 flex flex-col gap-2">
+              <p class="font-semibold">使い方マニュアル</p>
+              <p class="text-slate-500 text-sm">基本操作やアップデート情報をまとめています。</p>
+              <a href="#" class="text-blue-600 text-sm font-semibold">開く</a>
+            </li>
+            <li class="p-4 rounded-2xl border border-slate-100 flex flex-col gap-2">
+              <p class="font-semibold">よくある質問（FAQ）</p>
+              <p class="text-slate-500 text-sm">導入・運用で多い質問をカテゴリ別に掲載。</p>
+              <a href="#" class="text-blue-600 text-sm font-semibold">開く</a>
+            </li>
+            <li class="p-4 rounded-2xl border border-slate-100 flex flex-col gap-2">
+              <p class="font-semibold">お問い合わせ</p>
+              <p class="text-slate-500 text-sm">フォーム送信後、サポート担当より返信いたします。</p>
+              <a href="#" class="text-blue-600 text-sm font-semibold">開く</a>
+            </li>
+            <li class="p-4 rounded-2xl border border-slate-100 flex flex-col gap-2">
+              <p class="font-semibold">アップデート / お知らせ</p>
+              <p class="text-slate-500 text-sm">新機能やイベント情報を随時投稿します。</p>
+              <a href="#" class="text-blue-600 text-sm font-semibold">開く</a>
+            </li>
+          </ul>
+          <p class="text-xs text-slate-500">※ SaaS管理画面からは別タブで遷移します。</p>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const navButtons = document.querySelectorAll("[data-page-target]");
+      const sections = document.querySelectorAll("[data-page]");
+      const storedPage = sessionStorage.getItem("revelapp.activePage");
+      const defaultPage = storedPage || "home";
+
+      const showPage = (page) => {
+        sections.forEach((section) => {
+          const isActive = section.dataset.page === page;
+          section.classList.toggle("hidden", !isActive);
+          section.setAttribute("aria-hidden", String(!isActive));
+        });
+        navButtons.forEach((button) => {
+          const isActive = button.dataset.pageTarget === page;
+          button.classList.toggle("bg-white/10", isActive);
+          button.classList.toggle("text-white", isActive);
+          button.classList.toggle("font-semibold", isActive);
+          button.classList.toggle("text-slate-100/80", !isActive);
+          button.setAttribute("aria-current", isActive ? "page" : "false");
+        });
+        sessionStorage.setItem("revelapp.activePage", page);
+      };
+
+      navButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          showPage(button.dataset.pageTarget);
+        });
+      });
+
+      showPage(defaultPage);
+    });
+  </script>
+</body>
+</html>

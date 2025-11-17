@@ -1,0 +1,75 @@
+{
+  "statCards": [
+    {
+      "label": "ご契約期間",
+      "value": "2024/04/01〜2025/03/31",
+      "note": "更新タイミング：毎年4月（自動更新）"
+    },
+    {
+      "label": "ご登録人数",
+      "value": "24 / 30人",
+      "note": "先月比 +2 人"
+    },
+    {
+      "label": "ご契約プラン",
+      "value": "フォーカス",
+      "note": "利用者一覧＋選択ゲーム / 体調グラフ閲覧"
+    },
+    {
+      "label": "今月の予定",
+      "value": "AMA, 支払日, アップデート説明会",
+      "note": "詳細は下部カレンダーで表示"
+    }
+  ],
+  "calendarCells": [
+    { "day": 6 },
+    { "day": 7, "badges": [{ "label": "支払日", "color": "emerald" }] },
+    { "day": 8 },
+    { "day": 9, "badges": [{ "label": "AMA", "color": "blue" }] },
+    { "day": 10 },
+    { "day": 11 },
+    { "day": 12, "badges": [{ "label": "アプデ", "color": "orange" }] }
+  ],
+  "timeline": [
+    {
+      "dateLabel": "11/09",
+      "title": "AMA #16",
+      "description": "アプリ活用ノウハウを共有します"
+    },
+    {
+      "dateLabel": "11/18",
+      "title": "支払日",
+      "description": "当月の工賃振込予定"
+    }
+  ],
+  "manualVideos": [
+    {
+      "title": "初期設定ガイド",
+      "duration": "8:32",
+      "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+    },
+    {
+      "title": "利用者登録手順",
+      "duration": "6:15",
+      "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+    },
+    {
+      "title": "セルフモニタリング活用",
+      "duration": "9:40",
+      "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+    }
+  ],
+  "hybridInfo": {
+    "wordpress": [
+      "認証（施設アカウント1ID）",
+      "契約情報・サポート記事をCPT/ACFで管理",
+      "WP REST API + カスタムエンドポイント"
+    ],
+    "webapp": [
+      "Next.js + Tailwindでダッシュボードを構築",
+      "facility_idでデータを絞り込み表示",
+      "セルフモニタリング/工賃データの可視化"
+    ],
+    "note": "将来はGASやRevelApp本体DBとの直接連携、API仕様書の整備を予定しています。"
+  }
+}

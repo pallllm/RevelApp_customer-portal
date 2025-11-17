@@ -1,0 +1,51 @@
+{
+  "kpis": [
+    { "label": "アンケート回答率", "value": "95%", "note": "+3% / 前四半期比" },
+    { "label": "平均パフォーマンス", "value": "4.3 / 5", "note": "+0.1 / 前四半期比" },
+    { "label": "上位パフォーマー", "value": "43 人", "note": "全体の35%" },
+    { "label": "改善率", "value": "78%", "note": "改善傾向の利用者" }
+  ],
+  "memberRows": [
+    {
+      "name": "佐藤 光",
+      "points": "12,420 pt",
+      "unitPrice": "1.5 円",
+      "rewardAmount": "18,630 円",
+      "status": { "label": "支払済", "tone": "emerald" }
+    },
+    {
+      "name": "村上 花",
+      "points": "8,200 pt",
+      "unitPrice": "1.2 円",
+      "rewardAmount": "9,840 円",
+      "status": { "label": "確定", "tone": "yellow" }
+    },
+    {
+      "name": "木村 大",
+      "points": "3,000 pt",
+      "unitPrice": "1 円",
+      "rewardAmount": "3,000 円",
+      "status": { "label": "仮", "tone": "slate" }
+    }
+  ],
+  "docRows": [
+    {
+      "period": "2024年11月",
+      "detailUrl": "#",
+      "invoiceUrl": "#",
+      "status": { "label": "発行済", "tone": "emerald" }
+    },
+    {
+      "period": "2024年10月",
+      "detailUrl": "#",
+      "invoiceUrl": "#",
+      "status": { "label": "確定済", "tone": "yellow" }
+    },
+    {
+      "period": "2024年9月",
+      "detailUrl": "#",
+      "invoiceUrl": "#",
+      "status": { "label": "発行待ち", "tone": "slate" }
+    }
+  ]
+}

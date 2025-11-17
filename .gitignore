@@ -1,0 +1,13 @@
+# 依存ライブラリ
+node_modules/
+
+# Next.js ビルド成果物
+.next/
+
+# 環境変数
+.env
+.env.local
+.env.*.local
+
+# macOS
+.DS_Store
