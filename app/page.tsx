@@ -31,7 +31,7 @@ const HomePage = async () => {
           <p className="text-slate-500 mt-2">契約状況と利用状況をひと目で確認できます。</p>
       </div>
       <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-50 text-emerald-600 text-sm font-semibold">
-        自動更新（次回 2024/12/01）
+        {data.renewalInfo}
       </span>
     </div>
 

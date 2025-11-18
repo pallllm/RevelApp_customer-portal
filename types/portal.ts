@@ -35,6 +35,7 @@ export interface HybridInfo {
 }
 
 export interface HomeData {
+  renewalInfo: string;
   statCards: StatCard[];
   calendarCells: CalendarCell[];
   timeline: TimelineItem[];
