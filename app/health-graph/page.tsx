@@ -1,17 +1,22 @@
-import { getHealthGraphData } from "@/lib/dataSources";
-
-const badgeClasses = {
-  emerald: "bg-emerald-100 text-emerald-700",
-  blue: "bg-blue-50 text-blue-600",
-  orange: "bg-orange-50 text-orange-600",
-  yellow: "bg-yellow-50 text-yellow-600",
-  slate: "bg-slate-100 text-slate-600"
-};
+import { fetchHealthGraphData } from "@/lib/api";
 
 const gameColorPalette = ["bg-indigo-50 text-indigo-600", "bg-pink-50 text-pink-600", "bg-amber-50 text-amber-600", "bg-slate-100 text-slate-600"];
 
+const calendarStateClasses = {
+  none: "bg-slate-50 text-slate-500",
+  entry: "bg-emerald-100 text-emerald-700",
+  strong: "bg-emerald-200 text-emerald-800",
+  warning: "bg-red-100 text-red-600"
+} as const;
+
+const calendarLegend = [
+  { state: "entry", label: "実施" },
+  { state: "strong", label: "連続実施" },
+  { state: "warning", label: "体調注意" }
+] as const;
+
 const HealthGraphPage = async () => {
-  const data = await getHealthGraphData();
+  const data = await fetchHealthGraphData(1);
 
   return (
     <div className="space-y-6">
@@ -59,7 +64,7 @@ const HealthGraphPage = async () => {
               <button className="text-xs text-blue-600 font-semibold">履歴を表示</button>
             </div>
             <div className="flex flex-wrap gap-3">
-              {data.playedGames.map((game, index) => (
+              {data.games.map((game, index) => (
                 <span key={game} className={`px-4 py-2 rounded-full text-sm font-semibold ${gameColorPalette[index % gameColorPalette.length]}`}>
                   {game}
                 </span>
@@ -84,20 +89,23 @@ const HealthGraphPage = async () => {
               <span>S</span>
             </div>
             <div className="grid grid-cols-7 gap-1 text-[11px]">
-              {data.calendarCells.map((cell) => (
-                <span key={cell.day} className="h-8 flex items-center justify-center rounded bg-slate-50 text-slate-500">
+              {data.calendar.map((cell) => (
+                <span
+                  key={cell.day}
+                  className={`h-8 flex items-center justify-center rounded ${
+                    calendarStateClasses[cell.state ?? "none"]
+                  }`}
+                >
                   {cell.day}
                 </span>
               ))}
             </div>
             <div className="flex flex-wrap gap-2 text-[11px] text-slate-500">
-              {data.calendarCells.flatMap((cell) =>
-                cell.badges?.map((badge) => (
-                  <span key={`${cell.day}-${badge.label}`} className={`px-2 py-1 rounded ${badgeClasses[badge.color]}`}>
-                    {badge.label}
-                  </span>
-                )) ?? []
-              )}
+              {calendarLegend.map((legend) => (
+                <span key={legend.state} className={`px-2 py-1 rounded ${calendarStateClasses[legend.state]}`}>
+                  {legend.label}
+                </span>
+              ))}
             </div>
           </article>
         </div>

@@ -23,7 +23,7 @@ const formatPoints = (value: number) => `${value.toLocaleString()} pt`;
 
 const RewardsPage = async () => {
   const data = await fetchRewardsData(1);
-  const { summary, members, invoices } = data;
+  const { period, summary, members, invoices } = data;
 
   return (
     <div className="space-y-6">
@@ -34,10 +34,10 @@ const RewardsPage = async () => {
         </div>
         <div className="flex flex-wrap gap-3">
           <select className="px-4 py-2 rounded-xl border border-slate-200 text-sm bg-white">
-            <option>{summary.year}年</option>
+            <option>{period.year}年</option>
           </select>
           <select className="px-4 py-2 rounded-xl border border-slate-200 text-sm bg-white">
-            <option>{summary.quarter}</option>
+            <option>{period.quarter}</option>
           </select>
           <select className="px-4 py-2 rounded-xl border border-slate-200 text-sm bg-white">
             <option>総合</option>
@@ -110,7 +110,9 @@ const RewardsPage = async () => {
         <header className="flex flex-wrap gap-3 items-center justify-between">
           <div>
             <h3 className="text-lg font-semibold">利用者ごとの工賃金額</h3>
-            <p className="text-xs text-slate-500">年月：{summary.year}年{summary.quarter}</p>
+            <p className="text-xs text-slate-500">
+              年月：{period.year}年{period.quarter}
+            </p>
           </div>
           <button className="text-sm text-blue-600 font-semibold">CSVダウンロード</button>
         </header>

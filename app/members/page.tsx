@@ -1,4 +1,4 @@
-import { getMembersData } from "@/lib/dataSources";
+import { fetchMembersData } from "@/lib/api";
 
 const toneBadgeClasses = {
   emerald: "bg-emerald-50 text-emerald-600",
@@ -9,7 +9,7 @@ const toneBadgeClasses = {
 };
 
 const MembersPage = async () => {
-  const data = await getMembersData();
+  const data = await fetchMembersData(1);
 
   return (
     <div className="space-y-6">
@@ -19,7 +19,7 @@ const MembersPage = async () => {
           <p className="text-sm text-slate-500">プランに応じて表示内容と操作が変わります。</p>
         </div>
         <div className="flex items-center gap-2 text-xs">
-          {data.memberPlanNotes.map((note) => (
+          {data.planNotes.map((note) => (
             <span key={note.label} className={`px-3 py-1 rounded-full ${toneBadgeClasses[note.tone]}`}>
               {note.label}
             </span>

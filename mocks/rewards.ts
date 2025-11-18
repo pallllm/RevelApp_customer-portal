@@ -6,14 +6,14 @@ export const mockRewardsData: RewardsPageData = {
   summary: {
     year: 2024,
     quarter: "Q3",
-    surveyRate: 95,
+    surveyRate: 999,
     averagePerformance: 4.3,
     topPerformers: 43,
     improvementRate: 78
   },
   members: [
     {
-      name: "佐藤 光",
+      name: "佐藤 ",
       points: 12420,
       unit: 1.5,
       amount: 18630,

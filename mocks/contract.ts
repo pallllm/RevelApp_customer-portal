@@ -1,0 +1,33 @@
+import type { ContractPageData } from "@/types/contract";
+
+export const mockContractData: ContractPageData = {
+  basic: {
+    title: "基本情報",
+    entries: [
+      { label: "法人名", value: "WellsTech株式会社" },
+      { label: "ご契約事業所名", value: "GIF-TECH's 板橋" },
+      { label: "住所", value: "東京都板橋区 ○○○" },
+      { label: "施設種別", value: "就労継続支援B型" },
+      { label: "契約日", value: "2024/04/01" },
+      { label: "お支払い方法", value: "口座振替" }
+    ]
+  },
+  contacts: {
+    title: "ご連絡先",
+    entries: [
+      { label: "ご担当者様名", value: "近藤 貴司 様" },
+      { label: "ご担当者様のご連絡先", value: "sample@example.com / 03-XXXX-XXXX" },
+      { label: "事務等に関するご連絡先", value: "billing@example.com" }
+    ]
+  },
+  plan: {
+    title: "ご契約プラン",
+    entries: [
+      { label: "ご契約プラン", value: "フォーカスプラン" },
+      { label: "登録利用者数", value: "15 名" },
+      { label: "ご利用PC台数", value: "3 台" },
+      { label: "月額ご利用料金", value: "55,000 円（税込）" }
+    ]
+  },
+  note: "情報を変更したい場合は「編集申請」から申請してください。RevelApp運営側で確認後に更新します。"
+};

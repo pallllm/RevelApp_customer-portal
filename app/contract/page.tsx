@@ -1,7 +1,7 @@
-import { getContractData } from "@/lib/dataSources";
+import { fetchContractData } from "@/lib/api";
 
 const ContractPage = async () => {
-  const data = await getContractData();
+  const data = await fetchContractData(1);
 
   return (
     <div className="space-y-6">
@@ -15,9 +15,9 @@ const ContractPage = async () => {
 
       <div className="grid gap-6 lg:grid-cols-3">
         <article className="bg-white rounded-3xl p-6 shadow-sm space-y-4 lg:col-span-2">
-          <h3 className="text-lg font-semibold">{data.contractInfo.title}</h3>
+          <h3 className="text-lg font-semibold">{data.basic.title}</h3>
           <dl className="grid gap-y-4 gap-x-8 sm:grid-cols-2 text-sm">
-            {data.contractInfo.entries.map((entry) => (
+            {data.basic.entries.map((entry) => (
               <div key={entry.label}>
                 <dt className="text-slate-500">{entry.label}</dt>
                 <dd className="font-semibold text-slate-900">{entry.value}</dd>
