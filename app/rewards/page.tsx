@@ -1,15 +1,29 @@
-import { getRewardData } from "@/lib/dataSources";
+import { fetchRewardsData } from "@/lib/api";
 
-const toneBadgeClasses = {
-  emerald: "bg-emerald-50 text-emerald-600",
-  yellow: "bg-yellow-50 text-yellow-600",
-  slate: "bg-slate-100 text-slate-600",
-  blue: "bg-blue-100 text-blue-600",
-  orange: "bg-orange-50 text-orange-600"
-};
+const statusLabel = {
+  paid: "支払済",
+  fixed: "確定",
+  temp: "仮",
+  issued: "発行済",
+  confirmed: "確定済",
+  pending: "発行待ち"
+} as const;
+
+const statusClass = {
+  paid: "bg-emerald-50 text-emerald-600",
+  fixed: "bg-yellow-50 text-yellow-600",
+  temp: "bg-slate-100 text-slate-600",
+  issued: "bg-emerald-50 text-emerald-600",
+  confirmed: "bg-yellow-50 text-yellow-600",
+  pending: "bg-slate-100 text-slate-600"
+} as const;
+
+const formatCurrency = (value: number) => `${value.toLocaleString()} 円`;
+const formatPoints = (value: number) => `${value.toLocaleString()} pt`;
 
 const RewardsPage = async () => {
-  const data = await getRewardData();
+  const data = await fetchRewardsData(1);
+  const { summary, members, invoices } = data;
 
   return (
     <div className="space-y-6">
@@ -20,12 +34,10 @@ const RewardsPage = async () => {
         </div>
         <div className="flex flex-wrap gap-3">
           <select className="px-4 py-2 rounded-xl border border-slate-200 text-sm bg-white">
-            <option>2024年</option>
-            <option>2023年</option>
+            <option>{summary.year}年</option>
           </select>
           <select className="px-4 py-2 rounded-xl border border-slate-200 text-sm bg-white">
-            <option>第3四半期</option>
-            <option>第4四半期</option>
+            <option>{summary.quarter}</option>
           </select>
           <select className="px-4 py-2 rounded-xl border border-slate-200 text-sm bg-white">
             <option>総合</option>
@@ -36,13 +48,26 @@ const RewardsPage = async () => {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-        {data.kpis.map((card) => (
-          <section key={card.label} className="bg-white rounded-2xl p-5 shadow-sm">
-            <p className="text-xs text-slate-400 uppercase tracking-wider">{card.label}</p>
-            <p className="text-3xl font-bold mt-2">{card.value}</p>
-            <p className="text-xs text-slate-500 mt-1">{card.note}</p>
-          </section>
-        ))}
+        <section className="bg-white rounded-2xl p-5 shadow-sm">
+          <p className="text-xs text-slate-400 uppercase tracking-wider">アンケート回答率</p>
+          <p className="text-3xl font-bold mt-2">{summary.surveyRate}%</p>
+          <p className="text-xs text-slate-500 mt-1">前四半期比</p>
+        </section>
+        <section className="bg-white rounded-2xl p-5 shadow-sm">
+          <p className="text-xs text-slate-400 uppercase tracking-wider">平均パフォーマンス</p>
+          <p className="text-3xl font-bold mt-2">{summary.averagePerformance}</p>
+          <p className="text-xs text-slate-500 mt-1">前四半期比</p>
+        </section>
+        <section className="bg-white rounded-2xl p-5 shadow-sm">
+          <p className="text-xs text-slate-400 uppercase tracking-wider">上位パフォーマー</p>
+          <p className="text-3xl font-bold mt-2">{summary.topPerformers} 人</p>
+          <p className="text-xs text-slate-500 mt-1">全体の比率</p>
+        </section>
+        <section className="bg-white rounded-2xl p-5 shadow-sm">
+          <p className="text-xs text-slate-400 uppercase tracking-wider">改善率</p>
+          <p className="text-3xl font-bold mt-2">{summary.improvementRate}%</p>
+          <p className="text-xs text-slate-500 mt-1">改善傾向の利用者</p>
+        </section>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-3">
@@ -62,18 +87,21 @@ const RewardsPage = async () => {
           <h3 className="text-lg font-semibold">ゲーム単価のデザイン</h3>
           <p className="text-sm text-slate-500">サービス継続期間に応じてポイント単価が変動します。</p>
           <div className="space-y-3">
-            <div className="flex justify-between items-center px-4 py-3 rounded-2xl bg-slate-50">
-              <span className="text-sm font-semibold">0〜3ヶ月</span>
-              <span className="text-base font-bold text-slate-900">1 pt = 1円</span>
-            </div>
-            <div className="flex justify-between items-center px-4 py-3 rounded-2xl bg-blue-50">
-              <span className="text-sm font-semibold">4〜6ヶ月</span>
-              <span className="text-base font-bold text-blue-700">1 pt = 1.2円</span>
-            </div>
-            <div className="flex justify-between items-center px-4 py-3 rounded-2xl bg-emerald-50">
-              <span className="text-sm font-semibold">7ヶ月〜</span>
-              <span className="text-base font-bold text-emerald-700">1 pt = 1.5円</span>
-            </div>
+            {[
+              { label: "0〜3ヶ月", value: "1 pt = 1円" },
+              { label: "4〜6ヶ月", value: "1 pt = 1.2円", accent: "bg-blue-50 text-blue-700" },
+              { label: "7ヶ月〜", value: "1 pt = 1.5円", accent: "bg-emerald-50 text-emerald-700" }
+            ].map((tier) => (
+              <div
+                key={tier.label}
+                className={`flex justify-between items-center px-4 py-3 rounded-2xl ${
+                  tier.accent ?? "bg-slate-50 text-slate-900"
+                }`}
+              >
+                <span className="text-sm font-semibold">{tier.label}</span>
+                <span className="text-base font-bold">{tier.value}</span>
+              </div>
+            ))}
           </div>
         </article>
       </div>
@@ -82,7 +110,7 @@ const RewardsPage = async () => {
         <header className="flex flex-wrap gap-3 items-center justify-between">
           <div>
             <h3 className="text-lg font-semibold">利用者ごとの工賃金額</h3>
-            <p className="text-xs text-slate-500">年月：2024年11月</p>
+            <p className="text-xs text-slate-500">年月：{summary.year}年{summary.quarter}</p>
           </div>
           <button className="text-sm text-blue-600 font-semibold">CSVダウンロード</button>
         </header>
@@ -98,15 +126,15 @@ const RewardsPage = async () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {data.memberRows.map((row) => (
-                <tr key={row.name}>
-                  <td className="py-4 pr-4">{row.name}</td>
-                  <td className="py-4 pr-4">{row.points}</td>
-                  <td className="py-4 pr-4">{row.unitPrice}</td>
-                  <td className="py-4 pr-4 font-semibold">{row.rewardAmount}</td>
+              {members.map((member) => (
+                <tr key={member.name}>
+                  <td className="py-4 pr-4">{member.name}</td>
+                  <td className="py-4 pr-4">{formatPoints(member.points)}</td>
+                  <td className="py-4 pr-4">{member.unit.toFixed(1)} 円</td>
+                  <td className="py-4 pr-4 font-semibold">{formatCurrency(member.amount)}</td>
                   <td className="py-4 pr-4">
-                    <span className={`px-2 py-1 text-xs rounded-full ${toneBadgeClasses[row.status.tone]}`}>
-                      {row.status.label}
+                    <span className={`px-2 py-1 text-xs rounded-full ${statusClass[member.status]}`}>
+                      {statusLabel[member.status]}
                     </span>
                   </td>
                 </tr>
@@ -126,28 +154,30 @@ const RewardsPage = async () => {
             <thead>
               <tr className="text-left text-slate-500 border-b border-slate-100">
                 <th className="py-3 pr-4 font-semibold">年月</th>
+                <th className="py-3 pr-4 font-semibold">工賃合計</th>
                 <th className="py-3 pr-4 font-semibold">工賃明細</th>
                 <th className="py-3 pr-4 font-semibold">RevelApp請求書</th>
                 <th className="py-3 font-semibold">ステータス</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {data.docRows.map((row) => (
-                <tr key={row.period}>
-                  <td className="py-4 pr-4">{row.period}</td>
+              {invoices.map((invoice) => (
+                <tr key={invoice.yearMonth}>
+                  <td className="py-4 pr-4">{invoice.yearMonth}</td>
+                  <td className="py-4 pr-4">{formatCurrency(invoice.rewardTotal)}</td>
                   <td className="py-4 pr-4">
-                    <a href={row.detailUrl} className="text-blue-600 underline text-sm">
+                    <a href={invoice.detailUrl} className="text-blue-600 underline text-sm">
                       PDFをダウンロード
                     </a>
                   </td>
                   <td className="py-4 pr-4">
-                    <a href={row.invoiceUrl} className="text-blue-600 underline text-sm">
+                    <a href={invoice.invoiceUrl} className="text-blue-600 underline text-sm">
                       PDFをダウンロード
                     </a>
                   </td>
                   <td className="py-4">
-                    <span className={`px-2 py-1 text-xs rounded-full ${toneBadgeClasses[row.status.tone]}`}>
-                      {row.status.label}
+                    <span className={`px-2 py-1 text-xs rounded-full ${statusClass[invoice.status]}`}>
+                      {statusLabel[invoice.status]}
                     </span>
                   </td>
                 </tr>
