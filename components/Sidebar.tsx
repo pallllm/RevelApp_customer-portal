@@ -9,6 +9,7 @@ const navItems = [
   { label: "体調の見える化", href: "/health-graph" },
   { label: "工賃", href: "/rewards" },
   { label: "ご契約情報", href: "/contract" },
+  { label: "変更申請", href: "/change-request" },
   { label: "サポート", href: "/support" }
 ];
 

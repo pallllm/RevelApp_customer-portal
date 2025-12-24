@@ -3,7 +3,8 @@ import { getHomeData } from "@/lib/dataSources";
 const badgeClasses = {
   emerald: "bg-emerald-50 text-emerald-600",
   blue: "bg-blue-50 text-blue-600",
-  orange: "bg-orange-50 text-orange-600"
+  orange: "bg-orange-50 text-orange-600",
+  slate: "bg-slate-50 text-slate-600"
 };
 
 const toEmbedUrl = (url?: string) => {

@@ -1,6 +1,8 @@
 import { fetchFromWp } from "@/lib/apiClient";
 import { mockHomeData, mockSupportData } from "@/lib/mocks";
+import { mockChangeRequestPageData } from "@/mocks/changeRequest";
 import { HomeData, SupportData } from "@/types/portal";
+import type { ChangeRequestPageData } from "@/types/changeRequest";
 
 const useMocks = process.env.NEXT_PUBLIC_USE_MOCKS !== "false";
 
@@ -28,4 +30,9 @@ export const getHomeData = async (): Promise<HomeData> => {
 export const getSupportData = async (): Promise<SupportData> => {
   if (useMocks) return mockSupportData;
   return fetchFromWp<SupportData>("/settings/support-links");
+};
+
+export const getChangeRequestData = async (): Promise<ChangeRequestPageData> => {
+  if (useMocks) return mockChangeRequestPageData;
+  return fetchFromWp<ChangeRequestPageData>(`/change-requests${buildQuery()}`);
 };
