@@ -51,34 +51,56 @@ export const ChangeRequestForm = ({ pageData, onSubmit, onCancel }: ChangeReques
   // Step 1: 申請タイプ選択
   if (step === 1) {
     return (
-      <div className="bg-white rounded-3xl p-8 shadow-sm">
-        <h2 className="text-2xl font-bold mb-2">変更申請の種類を選択</h2>
-        <p className="text-slate-500 mb-8">申請内容に応じて適切な種類を選択してください</p>
+      <div className="relative bg-white rounded-3xl p-10 shadow-xl border border-slate-100 overflow-hidden">
+        {/* 背景装飾 */}
+        <div className="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-full blur-3xl opacity-50 -ml-48 -mt-48"></div>
 
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {requestTypeInfoList.map((info) => (
+        <div className="relative z-10">
+          <div className="mb-10">
+            <div className="inline-block px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-full text-sm font-semibold mb-4">
+              ステップ 1 / 3
+            </div>
+            <h2 className="text-3xl font-bold bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent mb-3">
+              変更申請の種類を選択
+            </h2>
+            <p className="text-slate-600 text-lg">申請内容に応じて適切な種類を選択してください</p>
+          </div>
+
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {requestTypeInfoList.map((info) => (
+              <button
+                key={info.type}
+                onClick={() => handleTypeSelect(info.type)}
+                className="group relative text-left p-6 rounded-2xl bg-white border-2 border-slate-200 hover:border-blue-500 hover:shadow-xl transform hover:-translate-y-1 transition-all duration-200"
+              >
+                {/* カードホバー時の背景 */}
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+
+                <div className="relative z-10">
+                  <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center text-3xl mb-4 shadow-lg">
+                    {info.icon}
+                  </div>
+                  <h3 className="font-bold text-lg mb-2 text-slate-800 group-hover:text-blue-600 transition-colors">
+                    {info.label}
+                  </h3>
+                  <p className="text-sm text-slate-600 mb-4 leading-relaxed">{info.description}</p>
+                  <div className="flex items-center gap-2 text-xs text-slate-500">
+                    <span className="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>
+                    <span>処理期間: 約{info.estimatedDays}営業日</span>
+                  </div>
+                </div>
+              </button>
+            ))}
+          </div>
+
+          <div className="mt-10 flex justify-end">
             <button
-              key={info.type}
-              onClick={() => handleTypeSelect(info.type)}
-              className="text-left p-6 rounded-2xl border-2 border-slate-200 hover:border-blue-500 hover:bg-blue-50 transition-all"
+              onClick={onCancel}
+              className="px-8 py-3 rounded-xl border-2 border-slate-200 text-slate-600 font-semibold hover:border-slate-300 hover:bg-slate-50 transition-all"
             >
-              <div className="text-4xl mb-3">{info.icon}</div>
-              <h3 className="font-semibold text-lg mb-2">{info.label}</h3>
-              <p className="text-sm text-slate-600 mb-3">{info.description}</p>
-              <p className="text-xs text-slate-500">
-                処理期間: 約{info.estimatedDays}営業日
-              </p>
+              キャンセル
             </button>
-          ))}
-        </div>
-
-        <div className="mt-8 flex justify-end">
-          <button
-            onClick={onCancel}
-            className="px-6 py-3 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50"
-          >
-            キャンセル
-          </button>
+          </div>
         </div>
       </div>
     );
@@ -89,14 +111,28 @@ export const ChangeRequestForm = ({ pageData, onSubmit, onCancel }: ChangeReques
     const typeInfo = requestTypeInfoList.find(info => info.type === selectedType);
 
     return (
-      <div className="bg-white rounded-3xl p-8 shadow-sm">
-        <div className="flex items-center gap-3 mb-6">
-          <span className="text-4xl">{typeInfo?.icon}</span>
-          <div>
-            <h2 className="text-2xl font-bold">{typeInfo?.label}</h2>
-            <p className="text-sm text-slate-500">{typeInfo?.effectiveDateRule}</p>
+      <div className="relative bg-white rounded-3xl p-10 shadow-xl border border-slate-100 overflow-hidden">
+        {/* 背景装飾 */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-indigo-50 to-purple-50 rounded-full blur-3xl opacity-50 -mr-48 -mt-48"></div>
+
+        <div className="relative z-10">
+          {/* ヘッダー */}
+          <div className="mb-8">
+            <div className="inline-block px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-full text-sm font-semibold mb-4">
+              ステップ 2 / 3
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center text-4xl shadow-lg">
+                {typeInfo?.icon}
+              </div>
+              <div>
+                <h2 className="text-3xl font-bold bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent">
+                  {typeInfo?.label}
+                </h2>
+                <p className="text-slate-600 mt-1">{typeInfo?.effectiveDateRule}</p>
+              </div>
+            </div>
           </div>
-        </div>
 
         <div className="space-y-6">
           {selectedType === "add_member" && (
@@ -525,19 +561,20 @@ export const ChangeRequestForm = ({ pageData, onSubmit, onCancel }: ChangeReques
           )}
         </div>
 
-        <div className="mt-8 flex gap-4 justify-end">
-          <button
-            onClick={handleBack}
-            className="px-6 py-3 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50"
-          >
-            戻る
-          </button>
-          <button
-            onClick={handleNext}
-            className="px-6 py-3 rounded-xl bg-blue-600 text-white hover:bg-blue-700"
-          >
-            確認画面へ
-          </button>
+          <div className="mt-10 flex gap-4 justify-end">
+            <button
+              onClick={handleBack}
+              className="px-8 py-3 rounded-xl border-2 border-slate-200 text-slate-600 font-semibold hover:border-slate-300 hover:bg-slate-50 transition-all"
+            >
+              ← 戻る
+            </button>
+            <button
+              onClick={handleNext}
+              className="px-8 py-4 rounded-xl bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-bold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200"
+            >
+              確認画面へ →
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -548,45 +585,74 @@ export const ChangeRequestForm = ({ pageData, onSubmit, onCancel }: ChangeReques
     const typeInfo = requestTypeInfoList.find(info => info.type === selectedType);
 
     return (
-      <div className="bg-white rounded-3xl p-8 shadow-sm">
-        <h2 className="text-2xl font-bold mb-6">申請内容の確認</h2>
+      <div className="relative bg-white rounded-3xl p-10 shadow-xl border border-slate-100 overflow-hidden">
+        {/* 背景装飾 */}
+        <div className="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-emerald-50 to-teal-50 rounded-full blur-3xl opacity-50 -ml-48 -mt-48"></div>
 
-        <div className="bg-slate-50 rounded-2xl p-6 mb-6">
-          <div className="flex items-center gap-3 mb-4">
-            <span className="text-3xl">{typeInfo?.icon}</span>
-            <h3 className="text-xl font-semibold">{typeInfo?.label}</h3>
+        <div className="relative z-10">
+          {/* ヘッダー */}
+          <div className="mb-8">
+            <div className="inline-block px-4 py-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-full text-sm font-semibold mb-4">
+              ステップ 3 / 3 - 最終確認
+            </div>
+            <h2 className="text-3xl font-bold bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent mb-2">
+              申請内容の確認
+            </h2>
+            <p className="text-slate-600">以下の内容で申請します。内容をご確認ください。</p>
           </div>
 
-          <div className="space-y-3 text-sm">
-            {Object.entries(formData).map(([key, value]) => (
-              <div key={key} className="flex gap-2">
-                <span className="text-slate-500 min-w-[120px]">{key}:</span>
-                <span className="text-slate-800 font-medium">{String(value)}</span>
+          {/* 申請内容カード */}
+          <div className="bg-gradient-to-br from-slate-50 to-blue-50 rounded-2xl p-8 mb-6 border border-slate-200">
+            <div className="flex items-center gap-4 mb-6 pb-6 border-b border-slate-200">
+              <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center text-4xl shadow-lg">
+                {typeInfo?.icon}
               </div>
-            ))}
+              <div>
+                <h3 className="text-2xl font-bold text-slate-800">{typeInfo?.label}</h3>
+                <p className="text-slate-600 text-sm mt-1">{typeInfo?.description}</p>
+              </div>
+            </div>
+
+            <div className="grid gap-3">
+              {Object.entries(formData).map(([key, value]) => (
+                <div key={key} className="flex items-start gap-4 p-4 bg-white rounded-xl shadow-sm">
+                  <span className="text-sm font-semibold text-slate-500 min-w-[140px]">{key}</span>
+                  <span className="text-sm font-medium text-slate-800 flex-1">{String(value)}</span>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
 
-        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4 mb-6">
-          <p className="text-sm text-yellow-800">
-            <strong>ご注意:</strong> 申請内容は運営チームが確認後、反映されます。
-            処理期間は約{typeInfo?.estimatedDays}営業日です。
-          </p>
-        </div>
+          {/* 注意事項 */}
+          <div className="bg-gradient-to-r from-amber-50 to-yellow-50 border-l-4 border-amber-400 rounded-xl p-6 mb-8">
+            <div className="flex items-start gap-3">
+              <span className="text-2xl">⚠️</span>
+              <div>
+                <p className="font-semibold text-amber-900 mb-2">ご注意</p>
+                <p className="text-sm text-amber-800 leading-relaxed">
+                  申請内容は運営チームが確認後、反映されます。<br />
+                  処理期間は約<strong>{typeInfo?.estimatedDays}営業日</strong>です。<br />
+                  申請後、ステータスは申請履歴からご確認いただけます。
+                </p>
+              </div>
+            </div>
+          </div>
 
-        <div className="flex gap-4 justify-end">
-          <button
-            onClick={handleBack}
-            className="px-6 py-3 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50"
-          >
-            戻る
-          </button>
-          <button
-            onClick={handleSubmit}
-            className="px-6 py-3 rounded-xl bg-blue-600 text-white hover:bg-blue-700 font-semibold"
-          >
-            申請を送信
-          </button>
+          {/* ボタン */}
+          <div className="flex gap-4 justify-end">
+            <button
+              onClick={handleBack}
+              className="px-8 py-3 rounded-xl border-2 border-slate-200 text-slate-600 font-semibold hover:border-slate-300 hover:bg-slate-50 transition-all"
+            >
+              ← 戻る
+            </button>
+            <button
+              onClick={handleSubmit}
+              className="px-10 py-4 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-bold shadow-lg hover:shadow-2xl transform hover:-translate-y-0.5 transition-all duration-200"
+            >
+              🚀 申請を送信
+            </button>
+          </div>
         </div>
       </div>
     );

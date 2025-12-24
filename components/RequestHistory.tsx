@@ -8,23 +8,28 @@ interface RequestHistoryProps {
 const statusConfig = {
   pending: {
     label: "申請中",
-    className: "bg-yellow-50 text-yellow-700 border-yellow-200"
+    className: "bg-gradient-to-r from-yellow-400 to-orange-500 text-white",
+    dotColor: "bg-yellow-500"
   },
   reviewing: {
     label: "確認中",
-    className: "bg-blue-50 text-blue-700 border-blue-200"
+    className: "bg-gradient-to-r from-blue-400 to-cyan-500 text-white",
+    dotColor: "bg-blue-500"
   },
   approved: {
     label: "承認済み",
-    className: "bg-purple-50 text-purple-700 border-purple-200"
+    className: "bg-gradient-to-r from-purple-400 to-pink-500 text-white",
+    dotColor: "bg-purple-500"
   },
   completed: {
     label: "完了",
-    className: "bg-emerald-50 text-emerald-700 border-emerald-200"
+    className: "bg-gradient-to-r from-emerald-400 to-teal-500 text-white",
+    dotColor: "bg-emerald-500"
   },
   rejected: {
     label: "却下",
-    className: "bg-red-50 text-red-700 border-red-200"
+    className: "bg-gradient-to-r from-red-400 to-rose-500 text-white",
+    dotColor: "bg-red-500"
   }
 };
 
@@ -46,92 +51,125 @@ const formatDate = (dateString: string) => {
 const RequestDetailContent = ({ request }: { request: ChangeRequest }) => {
   const { payload } = request;
 
+  const DetailRow = ({ label, value }: { label: string; value: string }) => (
+    <div className="flex items-start gap-3 p-3 bg-slate-50 rounded-xl">
+      <span className="text-xs font-semibold text-slate-500 min-w-[100px]">{label}</span>
+      <span className="text-sm font-medium text-slate-800">{value}</span>
+    </div>
+  );
+
   switch (payload.type) {
     case "add_member":
       return (
-        <div className="space-y-2 text-sm">
-          <p><span className="text-slate-500">利用者名:</span> {payload.data.memberName} ({payload.data.memberNameKana})</p>
-          <p><span className="text-slate-500">生年月日:</span> {payload.data.birthDate}</p>
-          <p><span className="text-slate-500">利用開始日:</span> {payload.data.startDate}</p>
-          {payload.data.pcAssignment && <p><span className="text-slate-500">割当PC:</span> {payload.data.pcAssignment}</p>}
-          {payload.data.focusGame && <p><span className="text-slate-500">フォーカスゲーム:</span> {payload.data.focusGame}</p>}
-          {payload.data.notes && <p className="text-slate-600 mt-2">{payload.data.notes}</p>}
+        <div className="space-y-2">
+          <DetailRow label="利用者名" value={`${payload.data.memberName} (${payload.data.memberNameKana})`} />
+          <DetailRow label="生年月日" value={payload.data.birthDate} />
+          <DetailRow label="利用開始日" value={payload.data.startDate} />
+          {payload.data.pcAssignment && <DetailRow label="割当PC" value={payload.data.pcAssignment} />}
+          {payload.data.focusGame && <DetailRow label="フォーカスゲーム" value={payload.data.focusGame} />}
+          {payload.data.notes && (
+            <div className="p-3 bg-blue-50 rounded-xl border-l-4 border-blue-500">
+              <p className="text-sm text-blue-900">{payload.data.notes}</p>
+            </div>
+          )}
         </div>
       );
 
     case "remove_member":
       return (
-        <div className="space-y-2 text-sm">
-          <p><span className="text-slate-500">利用者名:</span> {payload.data.memberName}</p>
-          <p><span className="text-slate-500">利用終了日:</span> {payload.data.endDate}</p>
-          <p><span className="text-slate-500">理由:</span> {payload.data.reason}</p>
-          {payload.data.notes && <p className="text-slate-600 mt-2">{payload.data.notes}</p>}
+        <div className="space-y-2">
+          <DetailRow label="利用者名" value={payload.data.memberName} />
+          <DetailRow label="利用終了日" value={payload.data.endDate} />
+          <DetailRow label="理由" value={payload.data.reason} />
+          {payload.data.notes && (
+            <div className="p-3 bg-blue-50 rounded-xl border-l-4 border-blue-500">
+              <p className="text-sm text-blue-900">{payload.data.notes}</p>
+            </div>
+          )}
         </div>
       );
 
     case "change_game":
       return (
-        <div className="space-y-2 text-sm">
-          <p><span className="text-slate-500">利用者名:</span> {payload.data.memberName}</p>
-          <p><span className="text-slate-500">現在のゲーム:</span> {payload.data.currentGame}</p>
-          <p><span className="text-slate-500">変更後:</span> {payload.data.newGame}</p>
-          <p><span className="text-slate-500">変更希望日:</span> {payload.data.effectiveDate}</p>
-          {payload.data.notes && <p className="text-slate-600 mt-2">{payload.data.notes}</p>}
+        <div className="space-y-2">
+          <DetailRow label="利用者名" value={payload.data.memberName} />
+          <DetailRow label="現在のゲーム" value={payload.data.currentGame} />
+          <DetailRow label="変更後" value={payload.data.newGame} />
+          <DetailRow label="変更希望日" value={payload.data.effectiveDate} />
+          {payload.data.notes && (
+            <div className="p-3 bg-blue-50 rounded-xl border-l-4 border-blue-500">
+              <p className="text-sm text-blue-900">{payload.data.notes}</p>
+            </div>
+          )}
         </div>
       );
 
     case "change_pc":
       return (
-        <div className="space-y-2 text-sm">
-          <p><span className="text-slate-500">利用者名:</span> {payload.data.memberName}</p>
-          {payload.data.currentPc && <p><span className="text-slate-500">現在のPC:</span> {payload.data.currentPc}</p>}
-          <p><span className="text-slate-500">変更後:</span> {payload.data.newPc}</p>
-          <p><span className="text-slate-500">変更希望日:</span> {payload.data.effectiveDate}</p>
-          {payload.data.notes && <p className="text-slate-600 mt-2">{payload.data.notes}</p>}
+        <div className="space-y-2">
+          <DetailRow label="利用者名" value={payload.data.memberName} />
+          {payload.data.currentPc && <DetailRow label="現在のPC" value={payload.data.currentPc} />}
+          <DetailRow label="変更後" value={payload.data.newPc} />
+          <DetailRow label="変更希望日" value={payload.data.effectiveDate} />
+          {payload.data.notes && (
+            <div className="p-3 bg-blue-50 rounded-xl border-l-4 border-blue-500">
+              <p className="text-sm text-blue-900">{payload.data.notes}</p>
+            </div>
+          )}
         </div>
       );
 
     case "change_payment":
       return (
-        <div className="space-y-2 text-sm">
-          <p><span className="text-slate-500">現在の支払方法:</span> {payload.data.currentMethod}</p>
-          <p><span className="text-slate-500">変更後:</span> {payload.data.newMethod}</p>
-          <p><span className="text-slate-500">変更希望日:</span> {payload.data.effectiveDate}</p>
+        <div className="space-y-2">
+          <DetailRow label="現在の支払方法" value={payload.data.currentMethod} />
+          <DetailRow label="変更後" value={payload.data.newMethod} />
+          <DetailRow label="変更希望日" value={payload.data.effectiveDate} />
           {payload.data.bankName && (
             <>
-              <p><span className="text-slate-500">銀行名:</span> {payload.data.bankName}</p>
-              <p><span className="text-slate-500">口座名義:</span> {payload.data.accountHolder}</p>
+              <DetailRow label="銀行名" value={payload.data.bankName} />
+              <DetailRow label="口座名義" value={payload.data.accountHolder || ""} />
             </>
           )}
-          {payload.data.notes && <p className="text-slate-600 mt-2">{payload.data.notes}</p>}
+          {payload.data.notes && (
+            <div className="p-3 bg-blue-50 rounded-xl border-l-4 border-blue-500">
+              <p className="text-sm text-blue-900">{payload.data.notes}</p>
+            </div>
+          )}
         </div>
       );
 
     case "change_bank":
       return (
-        <div className="space-y-2 text-sm">
-          <p><span className="text-slate-500">銀行名:</span> {payload.data.bankName}</p>
-          <p><span className="text-slate-500">支店名:</span> {payload.data.branchName}</p>
-          <p><span className="text-slate-500">口座種別:</span> {payload.data.accountType}</p>
-          <p><span className="text-slate-500">口座番号:</span> {payload.data.accountNumber}</p>
-          <p><span className="text-slate-500">口座名義:</span> {payload.data.accountHolder}</p>
-          <p><span className="text-slate-500">反映予定日:</span> {payload.data.effectiveDate}</p>
-          {payload.data.notes && <p className="text-slate-600 mt-2">{payload.data.notes}</p>}
+        <div className="space-y-2">
+          <DetailRow label="銀行名" value={payload.data.bankName} />
+          <DetailRow label="支店名" value={payload.data.branchName} />
+          <DetailRow label="口座種別" value={payload.data.accountType} />
+          <DetailRow label="口座番号" value={payload.data.accountNumber} />
+          <DetailRow label="口座名義" value={payload.data.accountHolder} />
+          <DetailRow label="反映予定日" value={payload.data.effectiveDate} />
+          {payload.data.notes && (
+            <div className="p-3 bg-blue-50 rounded-xl border-l-4 border-blue-500">
+              <p className="text-sm text-blue-900">{payload.data.notes}</p>
+            </div>
+          )}
         </div>
       );
 
     case "other":
       return (
-        <div className="space-y-2 text-sm">
-          <p><span className="text-slate-500">件名:</span> {payload.data.subject}</p>
-          {payload.data.category && <p><span className="text-slate-500">カテゴリ:</span> {payload.data.category}</p>}
+        <div className="space-y-2">
+          <DetailRow label="件名" value={payload.data.subject} />
+          {payload.data.category && <DetailRow label="カテゴリ" value={payload.data.category} />}
           {payload.data.urgency && (
-            <p><span className="text-slate-500">緊急度:</span> {
-              payload.data.urgency === "high" ? "高" :
-              payload.data.urgency === "medium" ? "中" : "低"
-            }</p>
+            <DetailRow
+              label="緊急度"
+              value={payload.data.urgency === "high" ? "高" : payload.data.urgency === "medium" ? "中" : "低"}
+            />
           )}
-          <p className="text-slate-600 mt-2 whitespace-pre-wrap">{payload.data.details}</p>
+          <div className="p-4 bg-slate-50 rounded-xl">
+            <p className="text-sm text-slate-700 whitespace-pre-wrap">{payload.data.details}</p>
+          </div>
         </div>
       );
 
@@ -143,60 +181,102 @@ const RequestDetailContent = ({ request }: { request: ChangeRequest }) => {
 export const RequestHistory = ({ requests }: RequestHistoryProps) => {
   if (requests.length === 0) {
     return (
-      <div className="bg-white rounded-3xl p-12 shadow-sm text-center">
-        <p className="text-slate-400 text-lg">申請履歴はまだありません</p>
-        <p className="text-slate-500 text-sm mt-2">新しい申請を作成してください</p>
+      <div className="relative bg-white rounded-3xl p-16 shadow-lg overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-50 to-blue-50 opacity-50"></div>
+        <div className="relative z-10 text-center">
+          <div className="w-24 h-24 bg-gradient-to-br from-slate-200 to-slate-300 rounded-full mx-auto mb-6 flex items-center justify-center text-4xl">
+            📋
+          </div>
+          <p className="text-slate-400 text-xl font-semibold">申請履歴はまだありません</p>
+          <p className="text-slate-500 mt-2">新しい申請を作成してください</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       {requests.map((request) => {
         const typeInfo = getRequestTypeInfo(request.requestType);
         const statusInfo = statusConfig[request.status];
 
         return (
-          <article key={request.id} className="bg-white rounded-3xl p-6 shadow-sm">
-            <div className="flex items-start justify-between mb-4">
-              <div className="flex items-center gap-3">
-                <span className="text-3xl">{typeInfo?.icon}</span>
+          <article
+            key={request.id}
+            className="group relative bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl border border-slate-100 transition-all duration-300 hover:-translate-y-1"
+          >
+            {/* 背景装飾 */}
+            <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-full blur-3xl opacity-0 group-hover:opacity-50 transition-opacity -mr-24 -mt-24"></div>
+
+            {/* ヘッダー */}
+            <div className="relative z-10 flex items-start justify-between mb-6">
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center text-3xl shadow-lg">
+                  {typeInfo?.icon}
+                </div>
                 <div>
-                  <h3 className="text-lg font-semibold">{typeInfo?.label}</h3>
-                  <p className="text-xs text-slate-500">
-                    申請日: {formatDate(request.submittedAt)}
-                  </p>
+                  <h3 className="text-xl font-bold text-slate-800">{typeInfo?.label}</h3>
+                  <div className="flex items-center gap-2 mt-1">
+                    <div className={`w-2 h-2 rounded-full ${statusInfo.dotColor} animate-pulse`}></div>
+                    <p className="text-sm text-slate-500">
+                      申請日: {formatDate(request.submittedAt)}
+                    </p>
+                  </div>
                 </div>
               </div>
-              <span className={`px-4 py-2 rounded-full text-sm font-semibold border ${statusInfo.className}`}>
+              <span className={`px-5 py-2.5 rounded-xl text-sm font-bold shadow-md ${statusInfo.className}`}>
                 {statusInfo.label}
               </span>
             </div>
 
-            <div className="border-t border-slate-100 pt-4 mb-4">
+            {/* コンテンツ */}
+            <div className="relative z-10 mb-6">
               <RequestDetailContent request={request} />
             </div>
 
-            <div className="border-t border-slate-100 pt-4 space-y-2 text-xs text-slate-500">
-              <p>申請者: {request.submittedBy}</p>
-              {request.reviewedAt && (
-                <p>確認日時: {formatDate(request.reviewedAt)} ({request.reviewedBy})</p>
-              )}
-              {request.completedAt && (
-                <p>完了日時: {formatDate(request.completedAt)}</p>
-              )}
+            {/* フッター */}
+            <div className="relative z-10 pt-6 border-t border-slate-100 space-y-3">
+              <div className="flex flex-wrap gap-4 text-sm">
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 bg-slate-400 rounded-full"></span>
+                  <span className="text-slate-600">申請者: <strong>{request.submittedBy}</strong></span>
+                </div>
+                {request.reviewedAt && (
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 bg-blue-400 rounded-full"></span>
+                    <span className="text-slate-600">
+                      確認: {formatDate(request.reviewedAt)} ({request.reviewedBy})
+                    </span>
+                  </div>
+                )}
+                {request.completedAt && (
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 bg-emerald-400 rounded-full"></span>
+                    <span className="text-slate-600">完了: {formatDate(request.completedAt)}</span>
+                  </div>
+                )}
+              </div>
+
               {request.effectiveDate && (
-                <p className="font-semibold text-slate-700">反映予定日: {request.effectiveDate}</p>
+                <div className="inline-block px-4 py-2 bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-200 rounded-xl">
+                  <span className="text-sm font-semibold text-indigo-700">
+                    📅 反映予定日: {request.effectiveDate}
+                  </span>
+                </div>
               )}
+
               {request.adminNotes && (
-                <p className="bg-blue-50 text-blue-700 p-3 rounded-lg mt-2">
-                  運営メモ: {request.adminNotes}
-                </p>
+                <div className="p-4 bg-gradient-to-r from-blue-50 to-cyan-50 border-l-4 border-blue-500 rounded-xl">
+                  <p className="text-sm font-semibold text-blue-900 mb-1">💬 運営メモ</p>
+                  <p className="text-sm text-blue-700">{request.adminNotes}</p>
+                </div>
               )}
+
               {request.rejectionReason && (
-                <p className="bg-red-50 text-red-700 p-3 rounded-lg mt-2">
-                  却下理由: {request.rejectionReason}
-                </p>
+                <div className="p-4 bg-gradient-to-r from-red-50 to-pink-50 border-l-4 border-red-500 rounded-xl">
+                  <p className="text-sm font-semibold text-red-900 mb-1">⚠️ 却下理由</p>
+                  <p className="text-sm text-red-700">{request.rejectionReason}</p>
+                </div>
               )}
             </div>
           </article>
